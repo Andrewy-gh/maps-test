@@ -9,11 +9,6 @@ export default function Directions({ start, end }) {
   const { directionsService, directionsRenderer } = useDirections();
   const [open, setOpen] = useState(true);
 
-  const clearDirections = () => {
-    directionsRenderer.setMap(null);
-    setOpen(false);
-  };
-
   // find a route using the directionsService
   useEffect(() => {
     if (!directionsService || !directionsRenderer) return;
@@ -37,6 +32,11 @@ export default function Directions({ start, end }) {
   }, [routeIndex, directionsRenderer]);
 
   if (!leg) return null;
+
+  const clearDirections = () => {
+    directionsRenderer.setMap(null);
+    setOpen(false);
+  };
 
   const startUrlString = [start.lat, start.lng].join('%2C');
   const endUrlString = [end.lat, end.lng].join('%2C');
