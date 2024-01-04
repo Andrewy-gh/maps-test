@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-
 import useGecoding from '../hooks/useGecoding';
 
 export default function Geocoder({ position }) {

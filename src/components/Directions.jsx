@@ -1,23 +1,12 @@
-import { useMapsLibrary, useMap } from '@vis.gl/react-google-maps';
 import { useEffect, useState } from 'react';
+import useDirections from '../hooks/useDirections';
 
 export default function Directions({ start, end }) {
-  const map = useMap();
-  const routesLibrary = useMapsLibrary('routes');
-  const [directionsService, setDirectionsService] = useState();
-  const [directionsRenderer, setDirectionsRenderer] = useState();
   const [routes, setRoutes] = useState([]);
   const [routeIndex, setRouteIndex] = useState(0);
   const selected = routes[routeIndex];
   const leg = selected?.legs[0];
-
-  // init services
-  useEffect(() => {
-    if (!routesLibrary || !map) return;
-    // create instance and set in state
-    setDirectionsService(new routesLibrary.DirectionsService());
-    setDirectionsRenderer(new routesLibrary.DirectionsRenderer({ map }));
-  }, [routesLibrary, map]);
+  const { directionsService, directionsRenderer } = useDirections();
 
   // find a route using the directionsService
   useEffect(() => {
