@@ -38,6 +38,9 @@ export default function Directions({ start, end }) {
 
   if (!leg) return null;
 
+  const startUrlString = [start.lat, start.lng].join('%2C');
+  const endUrlString = [end.lat, end.lng].join('%2C');
+
   return (
     <div className={`${open ? '' : 'hidden'} directions`}>
       <h2>{selected.summary}</h2>
@@ -58,6 +61,15 @@ export default function Directions({ start, end }) {
         ))}
       </ul>
       <button onClick={clearDirections}>Clear Directions</button>
+      <div>
+        <a
+          href={`https://www.google.com/maps/dir/?api=1&origin=${startUrlString}&destination=${endUrlString}&travelmode=driving`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          View Directions on Google Maps
+        </a>
+      </div>
     </div>
   );
 }
