@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import { APIProvider, Map } from '@vis.gl/react-google-maps';
 import locations from './data/locations';
+import addresses from './data/addresses';
 import LocationMarker from './components/LocationMarker';
 import Directions from './components/Directions';
 import './App.css';
+
 function App() {
   const position = { lat: 40.7128, lng: -74.006 };
   const [locationIndex, setLocationIndex] = useState();
   const handleIndexChange = (index) => setLocationIndex(index);
+
   return (
     <main>
       <div className="container">
