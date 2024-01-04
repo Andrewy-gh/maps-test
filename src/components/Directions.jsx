@@ -7,6 +7,12 @@ export default function Directions({ start, end }) {
   const selected = routes[routeIndex];
   const leg = selected?.legs[0];
   const { directionsService, directionsRenderer } = useDirections();
+  const [open, setOpen] = useState(true);
+
+  const clearDirections = () => {
+    directionsRenderer.setMap(null);
+    setOpen(false);
+  };
 
   // find a route using the directionsService
   useEffect(() => {
@@ -33,7 +39,7 @@ export default function Directions({ start, end }) {
   if (!leg) return null;
 
   return (
-    <div className="directions">
+    <div className={`${open ? '' : 'hidden'} directions`}>
       <h2>{selected.summary}</h2>
       <p>
         {leg.start_address.split(',')[0]} to {leg.end_address.split(',')[0]}
@@ -51,6 +57,7 @@ export default function Directions({ start, end }) {
           </li>
         ))}
       </ul>
+      <button onClick={clearDirections}>Clear Directions</button>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { APIProvider, Map } from '@vis.gl/react-google-maps';
 import locations from './data/locations';
 import addresses from './data/addresses';
@@ -7,9 +7,25 @@ import Directions from './components/Directions';
 import './App.css';
 
 function App() {
-  const position = { lat: 40.7128, lng: -74.006 };
+  const [position, setPosition] = useState({ lat: 40.7128, lng: -74.006 });
   const [locationIndex, setLocationIndex] = useState();
   const handleIndexChange = (index) => setLocationIndex(index);
+
+  // gets location of user
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        setPosition(pos);
+      });
+    } else {
+      // handle error
+      alert('geolocation not enabled');
+    }
+  }, []);
 
   return (
     <main>
