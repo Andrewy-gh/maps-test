@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
-import { APIProvider, Map } from '@vis.gl/react-google-maps';
+import {
+  AdvancedMarker,
+  APIProvider,
+  Map,
+  Pin,
+} from '@vis.gl/react-google-maps';
 import locations from './data/locations';
 import addresses from './data/addresses';
 import LocationMarker from './components/LocationMarker';
@@ -9,7 +14,7 @@ import './App.css';
 function App() {
   const [position, setPosition] = useState({ lat: 40.7128, lng: -74.006 });
   const [locationIndex, setLocationIndex] = useState();
-  const handleIndexChange = (index) => setLocationIndex(index);
+  const [open, setOpen] = useState(false);
 
   // gets location of user
   useEffect(() => {
@@ -27,11 +32,27 @@ function App() {
     }
   }, []);
 
+  const handleIndexChange = (index) => {
+    setOpen(true);
+    setLocationIndex(index);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    setLocationIndex(undefined);
+  };
+
   return (
     <main>
       <div className="container">
         <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
           <Map zoom={12} center={position} mapId={import.meta.env.VITE_MAP_ID}>
+            <AdvancedMarker position={position}>
+              <Pin
+                background={'blue'}
+                borderColor={'blue'}
+                glyphColor={'grey'}
+              />
+            </AdvancedMarker>
             {locations.map((position, index) => (
               <LocationMarker
                 key={index}
@@ -39,7 +60,15 @@ function App() {
                 handleIndexChange={() => handleIndexChange(index)}
               />
             ))}
-            <Directions start={position} end={locations[locationIndex]} />
+            {locationIndex !== undefined && (
+              <div className={`${open ? '' : 'hidden'}`}>
+                <Directions
+                  start={position}
+                  end={locations[locationIndex]}
+                  handleClose={handleClose}
+                />
+              </div>
+            )}
           </Map>
         </APIProvider>
       </div>

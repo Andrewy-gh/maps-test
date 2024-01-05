@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 
 export default function useDirections() {
   const map = useMap();
+
   // load routes google maps library
   const routesLibrary = useMapsLibrary('routes');
   const [directionsService, setDirectionsService] = useState();

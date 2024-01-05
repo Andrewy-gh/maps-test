@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import useDirections from '../hooks/useDirections';
+import { useMapsLibrary, useMap } from '@vis.gl/react-google-maps';
 
-export default function Directions({ start, end }) {
+export default function Directions({ start, end, handleClose }) {
   const [routes, setRoutes] = useState([]);
   const [routeIndex, setRouteIndex] = useState(0);
   const selected = routes[routeIndex];
   const leg = selected?.legs[0];
   const { directionsService, directionsRenderer } = useDirections();
-  const [open, setOpen] = useState(true);
 
   // find a route using the directionsService
   useEffect(() => {
@@ -35,14 +35,14 @@ export default function Directions({ start, end }) {
 
   const clearDirections = () => {
     directionsRenderer.setMap(null);
-    setOpen(false);
+    handleClose();
   };
 
   const startUrlString = [start.lat, start.lng].join('%2C');
   const endUrlString = [end.lat, end.lng].join('%2C');
 
   return (
-    <div className={`${open ? '' : 'hidden'} directions`}>
+    <div className="directions">
       <h2>{selected.summary}</h2>
       <p>
         {leg.start_address.split(',')[0]} to {leg.end_address.split(',')[0]}
